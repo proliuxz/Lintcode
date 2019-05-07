@@ -18,15 +18,14 @@ public class SS1679 {
 
     private String setNumber(String n, int r3, int r5)
     {
-        if (n == null && r3 ==0 && r5 == 0)
+        if (n == null || n.length() ==0)
             return "";
         int len = n.length();
         StringBuilder sb = new StringBuilder();
         int first = n.charAt(0)-'0';
         if(first<3) {
-            int qty = len / 2;
-            sb = add3(sb, qty);
-            sb = add5(sb, qty);
+            sb = add3(sb, r3);
+            sb = add5(sb, r5);
             return sb.toString();
         }
         else if (first == 3) {
@@ -36,7 +35,7 @@ public class SS1679 {
                 sb = add3(sb,r3);
                 sb = add5(sb,r5-1);
                 String s2 = "5" + sb.toString();
-                if (Integer.valueOf(s1)<Integer.valueOf(s2))
+                if (s1.length() == s2.length()?s1.compareTo(s2)<0:s1.length()<s2.length())
                     return s1;
                 else
                     return s2;
@@ -48,10 +47,9 @@ public class SS1679 {
             }
         }
         else if (first < 5) {
-            int qty = len / 2;
             sb = add5(sb , 1);
-            sb = add3(sb,  qty);
-            sb = add5(sb, qty -1);
+            sb = add3(sb,  r3);
+            sb = add5(sb, r5 -1);
             return sb.toString();
         }
         else if (first == 5) {
@@ -67,7 +65,7 @@ public class SS1679 {
                 add3(sb, r3+1);
                 add5(sb, r5+1);
                 String s2 = sb.toString();
-                if (Integer.valueOf(s1)<Integer.valueOf(s2))
+                if (s1.length() == s2.length()?s1.compareTo(s2)<0:s1.length()<s2.length())
                     return s1;
                 else
                     return s2;
@@ -75,9 +73,8 @@ public class SS1679 {
         }
         else
         {
-            int qty = len / 2 + 1;
-            sb = add3(sb, qty);
-            sb = add5(sb, qty);
+            sb = add3(sb, r3+1);
+            sb = add5(sb, r5+1);
             return sb.toString();
         }
     }
@@ -96,5 +93,11 @@ public class SS1679 {
             sb.append('5');
         }
         return sb;
+    }
+
+    public static void main(String[] args)
+    {
+        SS1679 s = new SS1679();
+        System.out.println(s.luckyNumber("35"));
     }
 }

@@ -1,11 +1,10 @@
 import Util.Interval;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class S1668 {
+public class SS1668 {
     public int getAns(List<Interval> a) {
         // write your code here
         int result = 0;
@@ -58,7 +57,7 @@ public class S1668 {
         intervals.add(i7);
         intervals.add(i8);
         intervals.add(i9);
-        S1668 s = new S1668();
+        SS1668 s = new SS1668();
         s.getAns(intervals);
     }
 }
