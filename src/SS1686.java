@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class SS1686 {
     public int getMinimumNumOfBoots(int n, int b, int[] f, int[] s, int[] d) {
         int dp[] = new int[n];
