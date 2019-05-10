@@ -3,26 +3,23 @@ import java.util.Arrays;
 public class S014 {
     public int binarySearch(int[] nums, int target) {
         // write your code here
-        Arrays.binarySearch(nums, target);
-        int l = nums[0];
-        int r = nums[nums.length - 1];
-        while (l <= r) {
-            int mid = (l + r) >> 1;
-            int midVal = nums[mid];
+        if (nums == null || nums.length == 0)
+            return -1;
 
-            if (midVal < target)
-                l = mid + 1;
-            else if (midVal > target)
-                r = mid - 1;
+        int start = 0, end = nums.length - 1;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] == target)
+                end = mid;
+            else if (nums[mid] < target)
+                start = mid;
             else
-                r = mid;
+                end = mid;
         }
-        if (nums[l] == target) {
-            return l;
-        }
-        if (nums[r] == target) {
-            return r;
-        }
+        if (nums[start] == target)
+            return start;
+        if (nums[end] == target)
+            return end;
         return -1;
     }
 }
