@@ -9,6 +9,7 @@ public class S227 {
      */
     public S227(int i) {
         // create three towers
+        disks = new Stack<>();
     }
 
     /*
@@ -30,6 +31,8 @@ public class S227 {
      */
     public void moveTopTo(S227 t) {
         // Move the top disk of this tower to the top of t.
+        int top = disks.pop();
+        t.add(top);
     }
 
     /*
@@ -40,6 +43,11 @@ public class S227 {
      */
     public void moveDisks(int n, S227 destination, S227 buffer) {
         // Move n Disks from this tower to destination by buffer tower
+        if (n > 0) {
+            moveDisks(n - 1, buffer, destination);
+            moveTopTo(destination);
+            buffer.moveDisks(n - 1, destination, this);
+        }
     }
 
     /*
@@ -47,7 +55,6 @@ public class S227 {
      */
     public Stack<Integer> getDisks() {
         // write your code here
-
         return disks;
     }
 }
