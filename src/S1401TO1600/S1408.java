@@ -1,24 +1,57 @@
 package S1401TO1600;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 public class S1408 {
-    public int getTimes(int target, int original, int[] distance, int[] apply) {
-        // Write your code here
-        return dfs(target, original, distance, apply, 0,0);
+    class Station {
+        public int d;
+        public int gas;
+        public Station(int d, int gas) {
+            this.d = d;
+            this.gas = gas;
+        }
     }
 
-    public int dfs(int target, int gas, int[] distance, int[] apply, int times, int pos)
-    {
-        if(gas >= target)
-            return times;
-        if(distance == null || distance.length == 0 || gas < distance[pos] || apply == null || apply.length == 0)
+    public static Comparator<Station> gasComparator = new Comparator<Station>(){
+        public int compare(Station a, Station b) {
+            return b.gas - a.gas;
+        }
+    };
+    public static Comparator<Station> dComparator = new Comparator<Station>(){
+        public int compare(Station a, Station b) {
+            return a.d - b.d;
+        }
+    };
+
+    public int getTimes(int target, int original, int[] distance, int[] apply) {
+        // Write your code here
+        Queue<Station> q = new PriorityQueue<Station>(distance.length, gasComparator);
+        Station[] s = new Station[distance.length];
+        for(int i = 0; i < distance.length; i++) {
+            s[i] = new Station(distance[i], apply[i]);
+        }
+        Arrays.sort(s, dComparator);
+        int ans = 0;
+        int i = 0;
+        while(original < target && i < distance.length) {
+            while(i < distance.length && original >= s[i].d) {
+                q.offer(s[i]);
+                i++;
+            }
+            Station now = q.poll();
+            if(now == null) {
+                break;
+            }
+            original += now.gas;
+            ans++;
+        }
+        if(original >= target) {
+            return ans;
+        } else {
             return -1;
-        int nextTarget = target - distance[pos];
-        int nextGas1 = gas - distance[pos];
-        int nextGas2 = gas - distance[pos] + apply[pos];
-        int t1 = dfs(nextTarget, nextGas1, distance, apply, times, pos +1);
-        int t2 = dfs(nextTarget, nextGas2, distance, apply, times, pos +1);
-        if (t1 == -1 || t2 == -1)
-            return t1 == -1 ? t2 : t1;
-        return Math.min(t1, t2);
+        }
     }
 }

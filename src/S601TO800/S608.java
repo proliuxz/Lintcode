@@ -1,30 +1,23 @@
 package S601TO800;
 
-import java.util.HashMap;
-
 public class S608 {
     public int[] twoSum(int[] nums, int target) {
         // write your code here
-        HashMap<Integer, Integer> numbers = new HashMap<>();
-        for (int i = 0; i < nums.length ; i++) {
-            numbers.put(nums[i], i);
-        }
-
-        for (int i = 0; i < nums.length ; i++) {
-            int key = target - nums[i];
-            if (numbers.containsKey(key))
+        int l = 0;
+        int r = nums.length - 1;
+        while (l < r)
+        {
+            int sum = nums[l] + nums[r];
+            if (sum == target)
             {
-                int val = numbers.get(key);
-                if ( val != nums[i])
-                {
-                    if (val < i)
-                        return new int[] {val + 1 , i + 1};
-                    else
-                        return new int[] {i + 1, val + 1};
-                }
+                return new int[] {l + 1, r + 1};
             }
+            else if (sum > target)
+                r--;
+            else
+                l++;
         }
-        return null;
+        return nums;
     }
 
     public static void main(String[] args)

@@ -1,59 +1,33 @@
 package S1001TO1200;
 
-import java.util.*;
-
 public class S1029 {
-    Map<Integer, List<int[]>> flightMap;
-    List<Integer> visited;
 
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
         // write your code here
-        visited = new ArrayList<>();
-        flightMap = new HashMap<>();
-        for (int[] flight: flights) {
-            List<int[]> list = flightMap.getOrDefault(flight[0], new ArrayList<>());
-            list.add(flight);
-            flightMap.put(flight[0], list);
+        final int INF = 0x3f3f3f3f;
+        int m = flights.length;
+        int[] dis = new int[n]; // dis[i]表示i到src的最短路距离
+        for (int i = 0; i < n; i++) {
+            dis[i] = INF; // 初始化为无穷大
         }
-        return dfs(src, dst, K);
-    }
+        dis[src] = 0;
 
-    public int dfs(int start, int dst,  int remainTimes)
-    {
-        if (remainTimes <= 0)
-            return -1;
-        if (!flightMap.containsKey(start))
-            return -1;
-        if (visited.contains(start))
-            return -1;
-        List<int[]> flights = flightMap.get(start);
-        if (flights.size() == 0)
-            return -1;
-        int money = -1;
-        for (int i = 0; i < flights.size() ; i++) {
-            int[] f = flights.get(i);
-            int val = -1;
-            if(f[1] == dst)
-                val = f[2];
-            else
-            {
-                visited.add(start);
-                int m2 = dfs(f[1], dst, remainTimes-1);
-                if (m2 != -1)
-                    val = f[2]+m2;
-                visited.remove(visited.size()-1);
+        boolean[] updated = new boolean[n]; // updated[i] 表示i到src的最短路距离是否被更新过
+        for (int I = 0; I <= K; I++) { // 迭代K + 1次
+            for (int i = 0; i < m; i++) { // Bellman-Ford算法: 用每一条边进行松弛操作
+                int u = flights[i][0];
+                int v = flights[i][1];
+                int w = flights[i][2];
+                if (updated[u] == false && dis[u] + w < dis[v]) {
+                    dis[v] = dis[u] + w; // 只使用还没有被更新过的点进行松弛操作, 保证每一次迭代路径中最多只会添加一条边
+                    updated[v] = true; // v的最短路被更新了, 把updated设为true
+                }
             }
-            if (val != -1)
-            {
-                if (money == -1)
-                    money = val;
-                money = Math.min(money, val);
+            for (int i = 0; i < n; i++) { // 这一轮迭代结束要把updated还原为false
+                updated[i] = false;
             }
         }
-        return money;
-    }
 
-    public static void main() {
-
+        return dis[dst] == INF ? -1 : dis[dst];
     }
 }
