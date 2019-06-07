@@ -15,7 +15,7 @@ public class S1779 {
             if (numPos.containsKey(val))
             {
                 int pos = numPos.get(val);
-                res = i - pos;
+                res = Math.min(res, i - pos);
                 numPos.put(val,i);
             }
             else
