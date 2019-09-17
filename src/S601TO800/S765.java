@@ -1,4 +1,4 @@
-package S001TO200;
+package S601TO800;
 
 public class S765 {
     public boolean isValidTriangle(int a, int b, int c) {
