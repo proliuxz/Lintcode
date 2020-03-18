@@ -1,4 +1,4 @@
-package S1601TO1800;
+package S1001TO1200;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
