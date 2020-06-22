@@ -2,19 +2,17 @@ package S1601TO1800;
 
 public class S1700 {
     public int[] diStringMatch(String S) {
-        int len = S.length() + 1;
-        int[] res = new int[len];
-        for (int i = 0; i < len; i++) {
-            res[i] = i;
+        int len = S.length();
+        int l = 0;
+        int r = len;
+        int[] res = new int[len + 1];
+        for (int i = 0; i < len; ++i) {
+            if (S.charAt(i) == 'I')
+                res[i] = l++;
+            else
+                res[i] = r--;
         }
-        for (int i = 0; i < S.length(); i++) {
-             if(S.charAt(i) == 'D')
-             {
-                 int tmp = res[i];
-                 res[i] = res[i + 1];
-                 res[i + 1] = tmp;
-             }
-        }
+        res[len] = l;
         return res;
     }
 }

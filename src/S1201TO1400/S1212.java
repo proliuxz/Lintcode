@@ -1,4 +1,4 @@
-package S1001TO1200;
+package S1201TO1400;
 
 public class S1212 {
     public int findMaxConsecutiveOnes(int[] nums) {

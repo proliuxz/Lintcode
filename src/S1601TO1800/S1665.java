@@ -1,28 +1,19 @@
 package S1601TO1800;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 public class S1665 {
     public int[] calculateNumber(int num) {
-        // Write your code here.
-        List<Integer> list = new ArrayList<>();
-        int sum = 0;
-        int i = 0;
-        while (num > 0)
-        {
-            if (num % 2 == 1)
-            {
-                sum++;
-                list.add(i);
-            }
-            num /= 2;
-            i++;
-        }
-        list.add(0, sum);
-        int[] res = list.stream().mapToInt(x->x).toArray();
+        String s = Integer.toBinaryString(num);
+        int count = 0;
+        int r = 1;
+        for (int i = 0; i < s.length(); i++ )
+            if (s.charAt(i) == '1')
+                count++;
+
+        int[] res = new int[count+1];
+        res[0] = count;
+        for (int i = 0; i < s.length(); i++ )
+            if (s.charAt(i) == '1')
+                res[r++] = i + 1;
         return res;
     }
 }

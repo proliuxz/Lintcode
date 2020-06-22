@@ -1,13 +1,13 @@
-import S1001TO1200.S1185;
-import S1801TO2000.S1808;
+import ext.QSort;
+
 
 public class Main {
-    public static void main(String[] args)
-    {
-        S1808 s = new S1808();
-        int[] A = new int[] {2,1,2,4,2,2};
-        int[] B = new int[] {5,2,6,2,3,2};
-        int res = s.minDominoRotations(A, B);
-        System.out.println(res);
+    public static void main(String[] args) {
+        int arr[] = new int[]{3, 3, 3, 7, 9, 122344, 4656, 34, 34, 4656, 5, 6, 7, 8, 9, 343, 57765, 23, 12321};
+        int len = arr.length - 1;
+        arr = QSort.qsort(arr, 0, len);
+        for (int i : arr) {
+            System.out.print(i + "\t");
+        }
     }
 }

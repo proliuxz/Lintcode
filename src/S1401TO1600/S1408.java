@@ -15,25 +15,13 @@ public class S1408 {
         }
     }
 
-    public static Comparator<Station> gasComparator = new Comparator<Station>(){
-        public int compare(Station a, Station b) {
-            return b.gas - a.gas;
-        }
-    };
-    public static Comparator<Station> dComparator = new Comparator<Station>(){
-        public int compare(Station a, Station b) {
-            return a.d - b.d;
-        }
-    };
-
     public int getTimes(int target, int original, int[] distance, int[] apply) {
-        // Write your code here
-        Queue<Station> q = new PriorityQueue<Station>(distance.length, gasComparator);
+        Queue<Station> q = new PriorityQueue<>(distance.length, Comparator.comparingInt(a -> -a.gas));
         Station[] s = new Station[distance.length];
-        for(int i = 0; i < distance.length; i++) {
+        for(int i = 0; i < distance.length; i++)
             s[i] = new Station(distance[i], apply[i]);
-        }
-        Arrays.sort(s, dComparator);
+
+        Arrays.sort(s, Comparator.comparingInt(a -> a.d));
         int ans = 0;
         int i = 0;
         while(original < target && i < distance.length) {

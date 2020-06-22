@@ -1,34 +1,47 @@
 package S601TO800;
 
+import java.util.*;
+
 public class S615 {
-    private int[] visited;
-
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        visited = new int[numCourses];  //0 to not touched, 1 visiting, 2 visited
-        for (int i = 0; i < prerequisites.length; i++ )
-            if (dfs(prerequisites, i) == false) {
-                return false;
+        int count = 0;
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+        int[] indegree = new int[numCourses];
+        for(int i = 0 ;i < prerequisites.length; i++) {
+            if(!map.containsKey(prerequisites[i][1])) {
+                map.put(prerequisites[i][1], new ArrayList<>());
             }
-        return true;
-
-    }
-
-    private boolean dfs (int[][] prerequisites, int current) {
-        if (current >= prerequisites.length) return true;
-        switch(visited[prerequisites[current][1]]) {
-            case 2:
-                return true;
-            case 1:
-                visited[prerequisites[current][0]] = 1;
-                return false;
-            case 0:
-                visited[prerequisites[current][1]] = 1;
-                for (int i = 0; i < prerequisites.length; i++)
-                    if (prerequisites[i][0] == prerequisites[current][1] && dfs(prerequisites, i) == false)
-                        return false;
-                visited[prerequisites[current][1]] = 2;
-                break;
+            indegree[prerequisites[i][0]]++;
+            map.get(prerequisites[i][1]).add(prerequisites[i][0]);
         }
-        return true;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < numCourses; i++) {
+            if(indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        if(q.isEmpty()) {
+            return false;
+        }
+
+        while(!q.isEmpty()) {
+            int size = q.size();
+            for(int i = 0; i < size; i++) {
+                int temp = q.poll();
+                count++;
+                List<Integer> list = map.get(temp);
+
+                if(list != null) {
+                    for(int l: list) {
+                        indegree[l]--;
+                        if(indegree[l] == 0) {
+                            q.offer(l);
+                        }
+                    }
+                }
+            }
+        }
+        return count == numCourses;
     }
 }

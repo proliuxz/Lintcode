@@ -19,16 +19,10 @@ public class S549 {
     public static class Map {
         public void map(String s, Document value,
                         OutputCollector<String, Integer> output) {
-            // Write your code here
-            // Output the results into output buffer.
-            // Ps. output.collect(String key, int value);
-            int id = value.id;
-            String content = value.content;
-            String[] words = content.split(" ");
-            for (String word : words)
-                if (word.length() > 0) {
-                    output.collect(word, 1);
-                }
+            StringTokenizer tokenizer = new StringTokenizer(value.content);
+            while (tokenizer.hasMoreTokens())
+                output.collect(tokenizer.nextToken(),1);
+
         }
     }
 
@@ -36,32 +30,22 @@ public class S549 {
         private PriorityQueue<Pair> Q = null;
         private int k;
 
-        private Comparator<Pair> pairComparator = new Comparator<Pair>() {
-            public int compare(Pair left, Pair right) {
-                if (left.value != right.value) {
-                    return left.value - right.value;
-                }
-                return right.key.compareTo(left.key);
-            }
-        };
+        private Comparator<Pair> pairComparator = (left, right) -> left.value == right.value ?  right.key.compareTo(left.key) : left.value - right.value;
 
         public void setup(int k) {
-            // initialize your data structure here
             this.k = k;
-            Q = new PriorityQueue<Pair>(k, pairComparator);
+            Q = new PriorityQueue<>(k, pairComparator);
         }
 
         public void reduce(String key, Iterator<Integer> values) {
-            // Write your code here
             int sum = 0;
-            while (values.hasNext()) {
+            while (values.hasNext())
                 sum += values.next();
-            }
 
             Pair pair = new Pair(key, sum);
-            if (Q.size() < k) {
+            if (Q.size() < k)
                 Q.add(pair);
-            } else {
+            else {
                 Pair peak = Q.peek();
                 if (pairComparator.compare(pair, peak) > 0) {
                     Q.poll();
@@ -71,14 +55,10 @@ public class S549 {
         }
 
         public void cleanup(OutputCollector<String, Integer> output) {
-            // Output the top k pairs <word, times> into output buffer.
-            // Ps. output.collect(String key, Integer value);
             List<Pair> pairs = new ArrayList<Pair>();
-            while (!Q.isEmpty()) {
+            while (!Q.isEmpty())
                 pairs.add(Q.poll());
-            }
 
-            // reverse result
             int n = pairs.size();
             for (int i = n - 1; i >= 0; --i) {
                 Pair pair = pairs.get(i);
